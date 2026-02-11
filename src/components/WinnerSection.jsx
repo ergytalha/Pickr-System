@@ -1,49 +1,33 @@
-import { useState } from "react";
-import { cx } from "../utils";
+import { cx, fmt, fmtValue } from "../utils";
 
-export default function WinnerSection({ isSpinning, drawDone, displayName, mainWinner, reserveWinners }) {
-  const [revealedSet, setRevealedSet] = useState(new Set());
-
-  const revealReserve = (index) => {
-    setRevealedSet((prev) => new Set(prev).add(index));
-  };
-
+export default function WinnerSection({ isSpinning, drawDone, displayName, winners }) {
   return (
     <>
       {/* ─── Winner Box ─── */}
       <div className={cx("winner-box", drawDone && "done")}>
-        <div className="winner-label">Kazanan</div>
-        <div key={mainWinner || displayName} className={cx("winner-name", isSpinning && "spinning", drawDone && "done")}>
-          {displayName}
+        <div className="winner-label">
+          {winners.length > 1 ? "Kazananlar" : "Kazanan"}
         </div>
-      </div>
 
-      {/* ─── Reserves ─── */}
-      {drawDone && reserveWinners.length > 0 && (
-        <div className="reserves-section">
-          <div className="reserves-label">Yedek Kazananlar</div>
-          {reserveWinners.map((name, i) => {
-            const revealed = revealedSet.has(i);
-            return (
-              <div key={i} className={cx("reserve-item", revealed && "revealed")}>
-                <div className="reserve-item-left">
-                  <div className={cx("reserve-badge", revealed && "revealed")}>{i + 1}</div>
-                  <span className={cx("reserve-name", revealed && "revealed")}>
-                    {revealed ? name : "Gizli yedek kazanan"}
-                  </span>
-                </div>
-                {revealed ? (
-                  <span className="reserve-check">✓</span>
-                ) : (
-                  <button className="reveal-btn" onClick={() => revealReserve(i)}>
-                    Göster
-                  </button>
-                )}
+        {/* Single winner or spinning display */}
+        {(!drawDone || winners.length === 1) && (
+          <div key={displayName} className={cx("winner-name", isSpinning && "spinning", drawDone && "done")}>
+            {fmtValue(displayName)}
+          </div>
+        )}
+
+        {/* Multiple winners list */}
+        {drawDone && winners.length > 1 && (
+          <div className="winners-list">
+            {winners.map((name, i) => (
+              <div key={i} className="winner-item">
+                <div className="winner-badge">{fmt(i + 1)}</div>
+                <span className="winner-item-name">{fmtValue(name)}</span>
               </div>
-            );
-          })}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </>
   );
 }

@@ -62,5 +62,41 @@ export function parseFile(file) {
   });
 }
 
+/* ─── Export winners as Excel ─── */
+export function exportToExcel(winners) {
+  const data = winners.map((name, i) => ({ Sıra: i + 1, Kazanan: name }));
+  const ws = XLSX.utils.json_to_sheet(data);
+  ws["!cols"] = [{ wch: 6 }, { wch: 30 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Kazananlar");
+  XLSX.writeFile(wb, `cekilis-kazananlar-${new Date().toISOString().slice(0, 10)}.xlsx`);
+}
+
+/* ─── Export winners as JSON ─── */
+export function exportToJSON(winners) {
+  const data = winners.map((name, i) => ({
+    sira: i + 1,
+    kazanan: name,
+    tarih: new Date().toISOString(),
+  }));
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `cekilis-kazananlar-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ─── Number formatter (Turkish locale: 42.720) ─── */
+export const fmt = (n) => n.toLocaleString("tr-TR");
+
+/* ─── Format value: if numeric string, add thousand separators ─── */
+export const fmtValue = (val) => {
+  const str = String(val).trim();
+  if (/^\d+$/.test(str)) return Number(str).toLocaleString("tr-TR");
+  return str;
+};
+
 /* ─── className builder ─── */
 export const cx = (...classes) => classes.filter(Boolean).join(" ");
