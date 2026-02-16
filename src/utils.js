@@ -1,4 +1,6 @@
 import * as XLSX from "xlsx";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 
 /* ─── Fisher-Yates Shuffle ─── */
 export function shuffleArray(arr) {
@@ -72,20 +74,30 @@ export function exportToExcel(winners) {
   XLSX.writeFile(wb, `cekilis-kazananlar-${new Date().toISOString().slice(0, 10)}.xlsx`);
 }
 
-/* ─── Export winners as JSON ─── */
-export function exportToJSON(winners) {
-  const data = winners.map((name, i) => ({
-    sira: i + 1,
-    kazanan: name,
-    tarih: new Date().toISOString(),
-  }));
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `cekilis-kazananlar-${new Date().toISOString().slice(0, 10)}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+/* ─── Export winners as PDF ─── */
+export function exportToPDF(winners) {
+  const doc = new jsPDF();
+  const date = new Date().toLocaleDateString("tr-TR");
+
+  doc.setFontSize(18);
+  doc.setTextColor(232, 93, 4);
+  doc.text("Cekilis Sonuclari", 14, 20);
+
+  doc.setFontSize(10);
+  doc.setTextColor(113, 113, 122);
+  doc.text(`Tarih: ${date}  -  Toplam: ${winners.length.toLocaleString("tr-TR")} kazanan`, 14, 28);
+
+  autoTable(doc, {
+    startY: 35,
+    head: [["Sira", "Kazanan"]],
+    body: winners.map((name, i) => [i + 1, String(name)]),
+    styles: { fontSize: 10, cellPadding: 4 },
+    headStyles: { fillColor: [232, 93, 4], textColor: 255, fontStyle: "bold" },
+    alternateRowStyles: { fillColor: [255, 247, 237] },
+    columnStyles: { 0: { halign: "center", cellWidth: 20 } },
+  });
+
+  doc.save(`cekilis-kazananlar-${new Date().toISOString().slice(0, 10)}.pdf`);
 }
 
 /* ─── Number formatter (Turkish locale: 42.720) ─── */

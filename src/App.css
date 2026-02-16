@@ -211,10 +211,10 @@
   color: #16a34a;
 }
 
-.export-btn.json:hover {
-  border-color: #2563eb;
-  background: #eff6ff;
-  color: #2563eb;
+.export-btn.pdf:hover {
+  border-color: #dc2626;
+  background: #fef2f2;
+  color: #dc2626;
 }
 
 /* ─── Responsive: stack on small screens ─── */

@@ -4,7 +4,7 @@ import {
   shuffleArray,
   launchConfetti,
   exportToExcel,
-  exportToJSON,
+  exportToPDF,
   fmt,
   fmtValue,
   cx,
@@ -152,10 +152,10 @@ export default function CekilisApp() {
               <span className="export-icon">📊</span> Excel İndir
             </button>
             <button
-              className="export-btn json"
-              onClick={() => exportToJSON(allPastWinners)}
+              className="export-btn pdf"
+              onClick={() => exportToPDF(allPastWinners)}
             >
-              <span className="export-icon">📋</span> JSON İndir
+              <span className="export-icon">📄</span> PDF İndir
             </button>
           </div>
         )}
