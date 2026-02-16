@@ -95,19 +95,66 @@ export default function CekilisApp() {
 
   return (
     <div className="wrapper">
+              {/* ═══ Right: Past Winners Sidebar ═══ */}
+              <div className="sidebar">
+          <div className="sidebar-header">
+            <div>
+              <div className="sidebar-title">Kazananlar</div>
+              <div className="sidebar-count">
+                {allPastWinners.length > 0
+                  ? `${fmt(allPastWinners.length)} kişi çekildi`
+                  : "Henüz kazanan yok"}
+              </div>
+            </div>
+            {allPastWinners.length > 0 && !isSpinning && (
+              <button className="reset-btn-small" onClick={resetWinners}>
+                Sıfırla
+              </button>
+            )}
+          </div>
+
+          <div className="sidebar-list">
+            {allPastWinners.length === 0 ? (
+              <div className="sidebar-empty">
+                <div className="sidebar-empty-icon">🏆</div>
+                <div>Çekiliş yapıldığında kazananlar burada listelenecek</div>
+              </div>
+            ) : (
+              allPastWinners.map((name, i) => (
+                <div key={i} className="sidebar-item">
+                  <div className="sidebar-badge">{fmt(i + 1)}</div>
+                  <span className="sidebar-name">{fmtValue(name)}</span>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* ─── Export Buttons ─── */}
+          {allPastWinners.length > 0 && (
+            <div className="sidebar-footer">
+              <button className="export-btn excel" onClick={() => exportToExcel(allPastWinners)}>
+                <span className="export-icon">📊</span> Excel İndir
+              </button>
+              <button className="export-btn json" onClick={() => exportToJSON(allPastWinners)}>
+                <span className="export-icon">📋</span> JSON İndir
+              </button>
+            </div>
+          )}
+        </div>
+
       <div className="layout">
 
         {/* ═══ Left: Draw Panel ═══ */}
         <div className="container">
 
           {/* ─── Header Brand ─── */}
-          <div className="brand-header">
+          {/* <div className="brand-header">
             <div className="logo-placeholder"><img src={logo} alt="Lasera Medya" /></div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <span className="brand-name">Lasera Medya</span>
               <span className="brand-subtitle">Çekiliş Sistemi</span>
             </div>
-          </div>
+          </div> */}
 
           {/* ─── Title ─── */}
           <div className="title-section">
@@ -176,59 +223,13 @@ export default function CekilisApp() {
 
           {/* ─── Footer Brand ─── */}
           <div className="brand-footer">
-            <div className="footer-logo"><img src={logo} alt="Lasera Medya" /></div>
+            {/* <div className="footer-logo"><img src={logo} alt="Lasera Medya" /></div> */}
             <span className="footer-text">
               Powered by <strong>Lasera Medya</strong>
             </span>
           </div>
         </div>
 
-        {/* ═══ Right: Past Winners Sidebar ═══ */}
-        <div className="sidebar">
-          <div className="sidebar-header">
-            <div>
-              <div className="sidebar-title">Kazananlar</div>
-              <div className="sidebar-count">
-                {allPastWinners.length > 0
-                  ? `${fmt(allPastWinners.length)} kişi çekildi`
-                  : "Henüz kazanan yok"}
-              </div>
-            </div>
-            {allPastWinners.length > 0 && !isSpinning && (
-              <button className="reset-btn-small" onClick={resetWinners}>
-                Sıfırla
-              </button>
-            )}
-          </div>
-
-          <div className="sidebar-list">
-            {allPastWinners.length === 0 ? (
-              <div className="sidebar-empty">
-                <div className="sidebar-empty-icon">🏆</div>
-                <div>Çekiliş yapıldığında kazananlar burada listelenecek</div>
-              </div>
-            ) : (
-              allPastWinners.map((name, i) => (
-                <div key={i} className="sidebar-item">
-                  <div className="sidebar-badge">{fmt(i + 1)}</div>
-                  <span className="sidebar-name">{fmtValue(name)}</span>
-                </div>
-              ))
-            )}
-          </div>
-
-          {/* ─── Export Buttons ─── */}
-          {allPastWinners.length > 0 && (
-            <div className="sidebar-footer">
-              <button className="export-btn excel" onClick={() => exportToExcel(allPastWinners)}>
-                <span className="export-icon">📊</span> Excel İndir
-              </button>
-              <button className="export-btn json" onClick={() => exportToJSON(allPastWinners)}>
-                <span className="export-icon">📋</span> JSON İndir
-              </button>
-            </div>
-          )}
-        </div>
 
       </div>
     </div>
