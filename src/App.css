@@ -121,7 +121,7 @@
 .sidebar-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 38px;
   padding: 10px 10px;
   background: #f0fdf4;
   border-radius: 10px;
@@ -131,22 +131,22 @@
 }
 
 .sidebar-badge {
-  width: 26px;
-  height: 26px;
+  width: 39px;
+  height: 39px;
   border-radius: 8px;
   background: #22c55e;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 1.7rem;
   font-weight: 700;
   color: #fff;
   flex-shrink: 0;
 }
 
 .sidebar-name {
-  font-size: 0.85rem;
+  font-size: 3.49rem;
   font-weight: 600;
   color: var(--text);
   white-space: nowrap;
